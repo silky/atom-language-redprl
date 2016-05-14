@@ -15,3 +15,10 @@ $ cd ~/github
 $ hub clone freebroccolo/atom-language-redprl
 $ ln -s atom-language-redprl ~/.atom/packages/language-redprl
 ```
+
+## Themes
+
+This package is primarily tested with the [One
+Dark](https://atom.io/themes/one-dark-syntax) and [Atom
+Material](https://atom.io/themes/atom-material-syntax) syntax themes. Atom
+Material is recommended.
