@@ -1,0 +1,78 @@
+@import "syntax-variables";
+
+atom-text-editor::shadow .source.redprl {
+  .entity.name.function {
+    -webkit-font-feature-settings: "ss09" on;
+  }
+  .constant.redprl.symbol {
+    -webkit-font-feature-settings: "ss06" on;
+  }
+  .entity.name.tag {
+    -webkit-font-feature-settings: "ss04" on;
+  }
+}
+
+atom-text-editor::shadow .source.redprl {
+  .meta.bracketed {
+    background-color: rgba(50, 52, 69, 1);
+  }
+}
+
+atom-text-editor::shadow .source.redprl {
+  .parsing.accepting {
+    color: rgba(255, 255, 255, 1) !important;
+    background-color: rgba(0, 255, 0, 0.35) !important;
+  }
+  .parsing.rejecting.awaiting-correction {
+    color: rgba(255, 255, 255, 1) !important;
+    background-color: fadeout(spin(#EC5F67, 50%), 75%) !important;
+  }
+  .parsing.rejecting.trailing-malformed {
+    color: white !important;
+    background-color: fadeout(spin(#EC5F67, 50%), 75%) !important;
+  }
+}
+
+atom-text-editor::shadow .source.redprl {
+  .redprl-qed.entity.name.tag {
+    position: relative;
+    visibility: hidden;
+  }
+  .redprl-qed.entity.name.tag::before {
+    position: absolute;;
+    content: "∎";
+    visibility: visible;
+  }
+}
+
+atom-text-editor::shadow .source.redprl {
+  .entity.name.tag.redprl.define {
+    position: relative;
+    visibility: hidden;
+  }
+  .entity.name.tag.redprl.define::before {
+    position: absolute;;
+    content: "≜";
+    visibility: visible;
+  }
+}
+
+atom-text-editor::shadow .source.redprl {
+  .entity.name.tag.redprl.by {
+    position: relative;
+    visibility: hidden;
+  }
+  .entity.name.tag.redprl.by::before {
+    position: absolute;;
+    left: 0.275em;
+    content: "∵";
+    visibility: visible;
+  }
+}
+
+atom-pane .tab-bar .tab .title[data-path], .icon-file-text {
+  &[data-name$=".prl"]:before {
+    content: '★';
+    color: #AC4142
+  }
+}

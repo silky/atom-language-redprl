@@ -1,0 +1,39 @@
+'.source.redprl':
+
+  'Operator':
+    'prefix': 'Def'
+    'body': '''
+Def ${1:opid}${2:[${3:par} : ${4:exp}]}${5:(${6:arg} : ${7:exp})} : ${8:exp} = [
+  ${9:term}
+].
+    '''
+
+  'Symbol':
+    'prefix': 'Sym'
+    'body': '''
+  Sym ${1:sym} : ${2:exp}.
+    '''
+
+  'Record':
+    'prefix': 'Rcd'
+    'body': '''
+Rcd ${1:opid}${2:[${3:par} : ${4:exp}]}${5:(${6:arg} : ${7:exp})} = {
+  ${8:term}
+}.
+    '''
+
+  'Tactic':
+    'prefix': 'Tac'
+    'body': '''
+Tac ${1:opid}${2:[${3:par} : ${4:exp}]}${5:(${6:arg} : ${7:exp})} = [
+  ${8:term}
+].
+    '''
+
+  'Theorem':
+    'prefix': 'Thm'
+    'body': '''
+Thm ${1:opid}${2:[${3:par} : ${4:exp}]}${5:(${6:arg} : ${7:exp})} : ${8:[${9:term}]} by [
+  ${10:term}
+].
+    '''

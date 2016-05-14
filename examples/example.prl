@@ -1,0 +1,17 @@
+// operator definitions
+Def 𝜗                             : exp = [ term ].
+Def 𝜗[s:exp, t:exp]               : exp = [ term ].
+Def 𝜗              (M:exp, N:exp) : exp = [ term ].
+Def 𝜗[s:exp, t:exp](M:exp, N:exp) : exp = [ term ].
+
+// tactic definitions
+Tac 𝜏                             = [ term ].
+Tac 𝜏[s:exp, t:exp]               = [ term ].
+Tac 𝜏              (M:exp, N:exp) = [ term ].
+Tac 𝜏[s:exp, t:exp](M:exp, N:exp) = [ term ].
+
+// theorem definitions
+Thm 𝜙                             : [ term ] by [ term ].
+Thm 𝜙[s:exp, t:exp]               : [ term ] by [ term ].
+Thm 𝜙              (M:exp, N:exp) : [ term ] by [ term ].
+Thm 𝜙[s:exp, t:exp](M:exp, N:exp) : [ term ] by [ term ].

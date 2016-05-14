@@ -1,0 +1,5 @@
+'.source.redprl':
+  'editor':
+    "commentStart": "//"
+    "softTabs": true
+    "tabLength": 2

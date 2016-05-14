@@ -1,0 +1,480 @@
+'name': 'RedPRL'
+'scopeName': 'source.redprl'
+'fileTypes': [
+  'prl'
+]
+'patterns': [
+  { 'include': '#comment' }
+  { 'include': '#sigexp-cases' }
+  { 'include': '#malformed' }
+]
+'repository':
+  ###------------------------------------------------------------------------###
+  ### Signatures ------------------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'sigexp-cases':
+    'patterns': [
+      { 'include': '#symdec-cases' }
+      { 'include': '#sigdec-cases' }
+      { 'include': '#rcddec-cases' }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Symbol Declarations ---------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'symdec-cases':
+    'patterns': [ 'include': '#symdec' ]
+
+  ###------------------------------------------------------------------------###
+  ### Signature Declarations ------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'sigdec-cases':
+    'patterns': [
+      { 'include': '#sigdec-case-operator' }
+      { 'include': '#sigdec-case-tactic' }
+      { 'include': '#sigdec-case-theorem' }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Record Declarations ---------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'rcddec-cases':
+    'patterns': [ 'include': '#rcddec' ]
+
+  ###------------------------------------------------------------------------###
+  ### Operator Definitions --------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  # Def opid [ params ] ( args ) : sortid = [ term ] .
+  'sigdec-case-operator':
+    'patterns': [
+      {
+        'match': '[[:space:]]*\\b([Dd]|[Dd]e)\\b'
+        'captures':
+          '1': 'name': 'parsing.accepting.redprl'
+      }
+      {
+        'begin': '(?=[[:space:]]*\\b[Dd]ef\\b)'
+        'end': '[[:space:]]*(\\.)[[:space:]]*'
+        'applyEndPatternLast': on
+        'endCaptures':
+          '1': 'name': 'redprl-qed entity.name.tag.redprl'
+        'patterns': [
+          { 'include': '#comment' }
+          {
+            'begin': '\\b(Def)\\b[[:space:]]*'
+            'end': '[[:space:]]*(?=[\\[\\(:])'
+            'beginCaptures':
+              '1': 'name': 'entity.name.tag.redprl'
+            'patterns': [
+              { 'include': '#comment' }
+              { 'include': '#opid' }
+              { 'include': '#malformed' }
+            ]
+          }
+          {
+            'begin': '[[:space:]]*(\\[)[[:space:]]*'
+            'end': '[[:space:]]*(\\])[[:space:]]*'
+            'beginCaptures':
+              '1': 'name': 'entity.other.attribute-name.redprl'
+            'endCaptures':
+              '1': 'name': 'entity.other.attribute-name.redprl'
+            'patterns': [
+              { 'include': '#comment' }
+              { 'include': '#params' }
+              { 'include': '#malformed-sans-right-square-bracket' }
+            ]
+          }
+          {
+            'begin': '[[:space:]]*(\\()[[:space:]]*'
+            'end': '[[:space:]]*(\\))[[:space:]]*'
+            'patterns': [
+              { 'include': '#comment' }
+              { 'include': '#args' }
+              { 'include': '#malformed-sans-right-parenthesis' }
+            ]
+          }
+          {
+            'begin': '[[:space:]]*(:)[[:space:]]*'
+            'end': '(?==)'
+            'beginCaptures':
+              '1': 'name': 'keyword.operator.redprl'
+            'patterns': [
+              { 'include': '#sortid' }
+              { 'include': '#malformed' }
+            ]
+          }
+          {
+            'begin': '[[:space:]]*(=)[[:space:]]*'
+            'end': '[[:space:]]*(?=\\.)'
+            'beginCaptures':
+              '1': 'name': 'entity.name.tag.redprl define.redprl'
+            'patterns': [
+              { 'include': '#term-bracketed' }
+              { 'include' : '#malformed' }
+            ]
+          }
+          { 'include': '#malformed-sans-full-stop' }
+        ]
+      }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Tactic Definitions ----------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  # »Tac opid [ params ] ( args ) = [ term ] .«
+  'sigdec-case-tactic':
+    'patterns': [
+      {
+        'name': 'parsing.accepting.redprl'
+        'match': '\\b([Tt]|[Tt]a)\\b'
+      }
+      {
+        'begin': '(?=\\b[Tt]ac\\b)'
+        'end': '(\\.)'
+        'applyEndPatternLast': on
+        'endCaptures':
+          '1': 'name': 'redprl-qed entity.name.tag.redprl'
+        'patterns': [
+          {
+            'begin': '\\b([Tt]ac)\\b[[:space:]]*'
+            'end': '[[:space:]]*(?=[\\[\\(=])'
+            'beginCaptures':
+              '1': 'name': 'entity.name.tag.redprl'
+            'patterns': [
+              { 'include': '#opid' }
+              { 'include': '#malformed' }
+            ]
+          }
+          {
+            'begin': '[[:space:]]*(\\[)[[:space:]]*'
+            'end': '[[:space:]]*(\\])[[:space:]]*'
+            'beginCaptures':
+              '1': 'name': 'entity.other.attribute-name.redprl'
+            'endCaptures':
+              '1': 'name': 'entity.other.attribute-name.redprl'
+            'patterns': [
+              { 'include': '#comment' }
+              { 'include': '#params' }
+              { 'include': '#malformed-sans-right-square-bracket' }
+            ]
+          }
+          {
+            'begin': '[[:space:]]*(\\()[[:space:]]*'
+            'end': '[[:space:]]*(\\))[[:space:]]*'
+            'patterns': [
+              { 'include': '#comment' }
+              { 'include': '#args' }
+              { 'include': '#malformed-sans-right-parenthesis' }
+            ]
+          }
+          {
+            'begin': '[[:space:]]*(=)[[:space:]]*'
+            'end': '[[:space:]]*(?=\\.)'
+            'beginCaptures':
+              '1': 'name': 'entity.name.tag.redprl define.redprl'
+            'patterns': [
+              { 'include': '#term-bracketed' }
+              { 'include': '#malformed' }
+            ]
+          }
+          { 'include': '#malformed-sans-full-stop' }
+        ]
+      }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Theorem Declarations --------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  # »Thm opid [ params ] ( args ) : [ term ] by [ term ] .«
+  'sigdec-case-theorem':
+    'patterns': [
+      {
+        'name': 'parsing.accepting.redprl'
+        'match': '\\b([Tt]|[Tt]h)\\b'
+      }
+      {
+        'begin': '(?=\\b[Tt]hm\\b)'
+        'end': '(\\.)'
+        'applyEndPatternLast': on
+        'endCaptures':
+          '1': 'name': 'redprl-qed entity.name.tag.redprl'
+        'patterns': [
+          {
+            'begin': '\\b([Tt]hm)\\b[[:space:]]*'
+            'end': '[[:space:]]*(?=[\\[\\(:])'
+            'beginCaptures':
+              '1': 'name': 'entity.name.tag.redprl'
+            'patterns': [
+              { 'include': '#opid' }
+              { 'include': '#malformed' }
+            ]
+          }
+
+          {
+            'begin': '[[:space:]]*(:)[[:space:]]*'
+            'end': '[[:space:]]*(?=\\bby\\b)[[:space:]]*'
+            'beginCaptures':
+              '1': 'name': 'keyword.operator.redprl'
+            'patterns': [
+              { 'include': '#term-bracketed' }
+              { 'include': '#malformed' }
+            ]
+          }
+          {
+            'begin': '[[:space:]]*(\\[)[[:space:]]*'
+            'end': '[[:space:]]*(\\])[[:space:]]*'
+            'beginCaptures':
+              '1': 'name': 'entity.other.attribute-name.redprl'
+            'endCaptures':
+              '1': 'name': 'entity.other.attribute-name.redprl'
+            'patterns': [
+              { 'include': '#comment' }
+              { 'include': '#params' }
+              { 'include': '#malformed-sans-right-square-bracket' }
+            ]
+          }
+          {
+            'begin': '[[:space:]]*(\\()[[:space:]]*'
+            'end': '[[:space:]]*(\\))[[:space:]]*'
+            'patterns': [
+              { 'include': '#comment' }
+              { 'include': '#args' }
+              { 'include': '#malformed-sans-right-parenthesis' }
+            ]
+          }
+          {
+            'begin': '[[:space:]]*\\b(by)\\b[[:space:]]*'
+            'end': '[[:space:]]*(?=\\.)'
+            'beginCaptures':
+              '1': 'name': 'entity.name.tag.redprl by.redprl'
+            'patterns': [
+              { 'include': '#term-bracketed' }
+              { 'include' : '#malformed' }
+            ]
+          }
+          { 'include': '#malformed-sans-full-stop' }
+        ]
+      }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Record Declaration ----------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  # »Rcd opid [ params ] ( args ) = [ term ] .«
+  'rcddec':
+    'patterns': []
+
+  ###------------------------------------------------------------------------###
+  ### Operator Identifiers --------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'opid':
+    'patterns': [
+      {
+        'name': 'entity.name.function.redprl'
+        'begin': '[[:space:]]*\\b([[:word:]]+)'
+        'end': '\\b'
+      }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Parameters ------------------------------------------------------------###
+  ###------------------------------------------------------------------------###
+
+  'params':
+    'patterns': [
+      { 'include': '#symbind' }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Arguments -------------------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'args':
+    'patterns': [
+      { 'include': '#metabind' }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Terms -----------------------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'term':
+    'patterns': [
+      {
+        'match': '[[:space:]]*\\bterm\\b[[:space:]]*'
+      }
+    ]
+
+  'term-bracketed':
+    'patterns': [
+      {
+        'contentName': 'meta.bracketed'
+        'begin': '[[:space:]]*(\\[)'
+        'end': '(\\])[[:space:]]*'
+        'beginCaptures':
+          '1': 'name': 'meta.punctuation.separator'
+        'endCaptures':
+          '1': 'name': 'meta.punctuation.separator'
+        'patterns': [
+          { 'include': '#comment' }
+          { 'include': '#term' }
+          { 'include': '#malformed' }
+        ]
+      }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Rows ------------------------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'rows':
+    'patterns': [
+      {
+        'match': '\\brows\\b'
+      }
+    ]
+
+  'sortid':
+    'patterns': [
+      {
+        'name': 'parsing.accepting.redprl'
+        'match': '[[:space:]]*\\b(e|ex)\\b[[:space:]]*'
+      }
+      {
+        'name': 'entity.other.inherited-class.redprl'
+        'match': '[[:space:]]*\\bexp\\b[[:space:]]*'
+      }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Comments --------------------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'comment':
+    'patterns': [
+      {
+        'match': '(/)(?=[[:space:]]|$)|(//.*)$'
+        'captures':
+          '1': 'name': 'parsing.accepting.redprl'
+          '2': 'name': 'comment.line'
+      }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Symbol Binding --------------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'symbind':
+    'patterns': [
+      {
+        'begin': '(?!:)'
+        'end': '(?=:)'
+        'patterns': [
+          { 'include': '#comment' }
+          { 'include': '#symid' }
+          { 'include': '#malformed' }
+        ]
+      }
+      {
+        'begin': '[[:space:]]*(:)[[:space:]]*'
+        'end': '(?=[,\\]])(,)?[[:space:]]*'
+        'beginCaptures':
+          '1': 'name': 'keyword.operator.redprl'
+        'endCaptures':
+          '1': 'name': 'meta.punctuation.separator.redprl'
+        'patterns': [
+          { 'include': '#comment' }
+          { 'include': '#sortid' }
+          { 'include': '#malformed' }
+        ]
+      }
+    ]
+
+  'symid':
+    'patterns': [
+      {
+        'match': '[[:space:]]*([[:word:]]+)[[:space:]]*'
+        'captures':
+          '1': 'name': 'constant.redprl symbol.redprl'
+      }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### (Meta)Variable Binding ------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'metabind':
+    'patterns': [
+      {
+        'begin': '(?!:)'
+        'end': '(?=:)'
+        'patterns': [
+          { 'include': '#comment' }
+          { 'include': '#metaid' }
+          { 'include': '#malformed' }
+        ]
+      }
+      {
+        'begin': '[[:space:]]*(:)[[:space:]]*'
+        'end': '(?=[,\\)])(,)?[[:space:]]*'
+        'beginCaptures':
+          '1': 'name': 'keyword.operator.redprl'
+        'endCaptures':
+          '1': 'name': 'meta.punctuation.separator.redprl'
+        'patterns': [
+          { 'include': '#comment' }
+          { 'include': '#sortid' }
+          { 'include': '#malformed' }
+        ]
+      }
+    ]
+
+  'metaid':
+    'patterns': [
+      {
+        'match': '[[:space:]]*([[:word:]]+)[[:space:]]*'
+        'captures':
+          '1': 'name': 'variable.parameter.redprl'
+      }
+    ]
+
+  ###------------------------------------------------------------------------###
+  ### Malformed -------------------------------------------------------------###
+  ###------------------------------------------------------------------------###
+  'malformed':
+    'patterns': [
+      {
+        'contentName': 'invalid.illegal'
+        'begin': '[[:space:]]*+(?!(/|//|$))'
+        'end': '(\\.)|^$'
+        'endCaptures':
+          '1': 'name': 'invalid.illegal'
+      }
+    ]
+
+  'malformed-sans-full-stop':
+    'patterns': [
+      {
+        'contentName': 'invalid.illegal'
+        'begin': '[[:space:]]*+(?![\\.$])'
+        'end': '(\\.)|^$'
+        'endCaptures':
+          '1': 'name': 'invalid.illegal'
+      }
+    ]
+
+  'malformed-sans-right-parenthesis':
+    'patterns': [
+      {
+        'contentName': 'invalid.illegal'
+        'begin': '[[:space:]]*+(?![\\)$])'
+        'end': '(\\.)|^$'
+        'endCaptures':
+          '1': 'name': 'invalid.illegal'
+      }
+    ]
+
+  'malformed-sans-right-square-bracket':
+    'patterns': [
+      {
+        'contentName': 'invalid.illegal'
+        'begin': '[[:space:]]*+(?![\\]$])'
+        'end': '(\\.)|^$'
+        'endCaptures':
+          '1': 'name': 'invalid.illegal'
+      }
+    ]
