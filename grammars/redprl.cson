@@ -339,7 +339,7 @@
       }
       {
         'name': 'entity.other.inherited-class.redprl'
-        'match': '[[:space:]]*\\bexp\\b[[:space:]]*'
+        'match': '[[:space:]]*\\b(exp|tac|sym|lbl|lvl)\\b[[:space:]]*'
       }
     ]
 
